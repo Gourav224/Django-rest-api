@@ -20,6 +20,7 @@ myenv/
 
 # OS-specific files (e.g., macOS)
 .DS_Store
+.idea
 
 # Django-specific
 *.env
