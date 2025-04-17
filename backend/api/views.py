@@ -1,3 +1,4 @@
+import json
 from django.db.models import Max
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, generics, viewsets
@@ -6,7 +7,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import action, permission_classes
 from api.models import Order, Product
-from api.serializers import OrderSerializer, ProductInfoSerializer, ProductSerializer
+from api.serializers import (
+    OrderCreateSerializer,
+    OrderSerializer,
+    ProductInfoSerializer,
+    ProductSerializer,
+)
 
 from api.filters import InStockFilterBackend, OrderFilter, ProductFilter
 from api.pagination import CustomPageNumberPagination
@@ -52,6 +58,14 @@ class OrderViewSet(viewsets.ModelViewSet):
         if not self.request.user.is_staff:
             qs = qs.filter(user=self.request.user)
         return qs
+
+    def get_serializer_class(self):
+        if self.action == "create":
+            return OrderCreateSerializer
+        return super().get_serializer_class()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class ProductInfoApiView(APIView):
