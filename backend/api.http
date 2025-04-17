@@ -17,6 +17,35 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiY
 
 
 
+
+
+###
+GET  http://127.0.0.1:8000/api/user-orders/ HTTP/1.1 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0Nzc4NjQxLCJpYXQiOjE3NDQ3NzgzNDEsImp0aSI6IjgwZjkzZmJjY2MzNDRmNTViMDEzZDFmMTBhZGZiOTMyIiwidXNlcl9pZCI6Mn0.Uv9rnuM70cTel4Q8tTNeCYR2_CPZwNaUj8HFRxbUl2U
+
+###
+GET  http://127.0.0.1:8000/api/orders/ HTTP/1.1 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0ODg1NzgzLCJpYXQiOjE3NDQ4ODU0ODMsImp0aSI6IjgwNGYxYzkyYjNhOTQ2ZjZhOWM4NjlkNDI0MzkxNjZjIiwidXNlcl9pZCI6Mn0.kN61oew0PbJXp3aAkqYUPb7uBktL6YWHuG758R6TPrw
+
+###
+POST  http://127.0.0.1:8000/api/orders/ HTTP/1.1 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0ODg1NzgzLCJpYXQiOjE3NDQ4ODU0ODMsImp0aSI6IjgwNGYxYzkyYjNhOTQ2ZjZhOWM4NjlkNDI0MzkxNjZjIiwidXNlcl9pZCI6Mn0.kN61oew0PbJXp3aAkqYUPb7uBktL6YWHuG758R6TPrw
+
+{
+    "status":"PENDING",
+    "items":[
+        {
+            "product":2,
+            "quantity":2
+        },
+        {
+            "product":3,
+            "quantity":1
+        }
+    ]
+}
+
 ###
 POST  http://127.0.0.1:8000/api/token/ HTTP/1.1
 Content-Type: application/json
@@ -28,18 +57,9 @@ Content-Type: application/json
 
 
 ###
-GET  http://127.0.0.1:8000/api/user-orders/ HTTP/1.1 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0Nzc4NjQxLCJpYXQiOjE3NDQ3NzgzNDEsImp0aSI6IjgwZjkzZmJjY2MzNDRmNTViMDEzZDFmMTBhZGZiOTMyIiwidXNlcl9pZCI6Mn0.Uv9rnuM70cTel4Q8tTNeCYR2_CPZwNaUj8HFRxbUl2U
-
-###
-GET  http://127.0.0.1:8000/api/orders/ HTTP/1.1 
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0ODgyMzc4LCJpYXQiOjE3NDQ4ODIwNzgsImp0aSI6ImE2ZDJiMzBkZmVhNjQzYTg4OGUwMmI5MzE4NDNmYTBkIiwidXNlcl9pZCI6Mn0.RQOLHRq2jSrBDzqMbgu_yWbc8KB9MQDVY8T1RHHWjaQ
-
-
-###
-POST  http://127.0.0.1:8000/api/orders/ HTTP/1.1 
+PUT http://127.0.0.1:8000/api/orders/0cfbed1-adbe-483f-bcbc-6105ccb23394/ HTTP/1.1 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0ODg0Nzc4LCJpYXQiOjE3NDQ4ODQ0NzgsImp0aSI6IjU5OGE5OGI3MWRmMzQ2NzBiMWU1ZmY4OGMwMDc0MzA2IiwidXNlcl9pZCI6Mn0.ahR4y90s0VUkK3Jed1xsTe41iLiezxpCgd4Dv_oFMx0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ0ODg1NzgzLCJpYXQiOjE3NDQ4ODU0ODMsImp0aSI6IjgwNGYxYzkyYjNhOTQ2ZjZhOWM4NjlkNDI0MzkxNjZjIiwidXNlcl9pZCI6Mn0.kN61oew0PbJXp3aAkqYUPb7uBktL6YWHuG758R6TPrw
 
 {
     "status":"PENDING",

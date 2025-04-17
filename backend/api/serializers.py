@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Product, Order, OrderItem
+from django.db import transaction
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -41,30 +42,45 @@ class OrderCreateSerializer(serializers.ModelSerializer):
             model = OrderItem
             fields = ("product", "quantity")
 
-    items = OrderItemCreateSerializer(many=True)
+    items = OrderItemCreateSerializer(many=True, required=False)
 
     class Meta:
         model = Order
-        fields = (
-            "status",
-            "items",
-            "order_id",
-            "user"
-        )
+        fields = ("status", "items", "order_id", "user")
         extra_kwargs = {
             "user": {"read_only": True},
             "order_id": {"read_only": True},
         }
-        
 
     def create(self, validated_data):
         items_data = validated_data.pop("items")
-        order = Order.objects.create(**validated_data)
-        for item_data in items_data:
-            product = item_data["product"]
-            quantity = item_data["quantity"]
-            OrderItem.objects.create(order=order, product=product, quantity=quantity)
+        with transaction.atomic():
+            order = Order.objects.create(**validated_data)
+            for item_data in items_data:
+                product = item_data["product"]
+                quantity = item_data["quantity"]
+                OrderItem.objects.create(
+                    order=order, product=product, quantity=quantity
+                )
         return order
+
+    def update(self, instance, validated_data):
+        orderitem_data = validated_data.pop("items")
+
+        with transaction.atomic():
+
+            instance = super().update(instance, validated_data)
+            if orderitem_data is not None:
+                instance.items.all().delete()
+
+                for item in orderitem_data:
+                    product = item["product"]
+                    quantity = item["quantity"]
+                    OrderItem.objects.create(
+                        order=instance, product=product, quantity=quantity
+                    )
+
+        return instance
 
 
 class OrderSerializer(serializers.ModelSerializer):
