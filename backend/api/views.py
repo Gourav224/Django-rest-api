@@ -10,6 +10,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.views import APIView
 from rest_framework import filters
+from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .pagination import CustomPageNumberPagination
@@ -46,25 +47,32 @@ class ProductDetailsAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
 
 
-class OrderListAPIView(generics.ListAPIView):
-    queryset = Order.objects.prefetch_related("items__product")
-    serializer_class = OrderSerializer
-
-    def get_permissions(self):
-        self.permission_classes = [AllowAny]
-        if self.request.method in ["PUT", "PATCH", "DELETE"]:
-            self.permission_classes = [IsAdminUser]
-        return super().get_permissions()
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class=OrderSerializer
+    queryset=Order.objects.prefetch_related('items__product')
+    permission_classes =[AllowAny]
+    
 
 
-class UserOrderListAPIView(generics.ListAPIView):
-    queryset = Order.objects.prefetch_related("items__product")
-    serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+# class OrderListAPIView(generics.ListAPIView):
+#     queryset = Order.objects.prefetch_related("items__product")
+#     serializer_class = OrderSerializer
 
-    def get_queryset(self):
-        qs = super().get_queryset()
-        return qs.filter(user=self.request.user)
+#     def get_permissions(self):
+#         self.permission_classes = [AllowAny]
+#         if self.request.method in ["PUT", "PATCH", "DELETE"]:
+#             self.permission_classes = [IsAdminUser]
+#         return super().get_permissions()
+
+
+# class UserOrderListAPIView(generics.ListAPIView):
+#     queryset = Order.objects.prefetch_related("items__product")
+#     serializer_class = OrderSerializer
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         qs = super().get_queryset()
+#         return qs.filter(user=self.request.user)
 
 
 class ProductInfoApiView(APIView):
@@ -78,3 +86,5 @@ class ProductInfoApiView(APIView):
             }
         )
         return Response(serializer.data)
+
+

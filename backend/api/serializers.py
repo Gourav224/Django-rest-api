@@ -38,6 +38,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     total_price = serializers.SerializerMethodField(method_name="total")
+    # order_id = serializers.UUIDField(read_only=True)
 
     def total(self, obj):
         order_items = obj.items.all()
