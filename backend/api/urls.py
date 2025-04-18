@@ -5,7 +5,8 @@ from rest_framework.routers import DefaultRouter
 urlpatterns = [
     path("products/", views.ProductListCreateAPIView.as_view()),
     path("products/info", views.ProductInfoApiView.as_view()),
-    path("products/<int:pk>/", views.ProductDetailsAPIView.as_view()),
+    path("products/<int:pk>/", views.ProductDetailsAPIView.as_view(),name="product-detail"),
+    path("users/", views.UserListView.as_view()),
 ]
 
 

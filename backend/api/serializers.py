@@ -1,6 +1,17 @@
 from rest_framework import serializers
-from .models import Product, Order, OrderItem
+from .models import Product, Order, OrderItem, User
 from django.db import transaction
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "username",
+            "email",
+            "is_staff",
+            "is_superuser",
+        ]
 
 
 class ProductSerializer(serializers.ModelSerializer):

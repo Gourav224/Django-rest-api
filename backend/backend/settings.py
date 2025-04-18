@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -139,7 +140,16 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
     "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPageNumberPagination",
-    "PAGE_SIZE": 3,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "api.throttles.BurstRateThrottle",
+        "api.throttles.SustainedRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "2/minute",
+        "burst": "5/minute",
+        "sustained": "15/hour",
+    },
 }
 
 
@@ -150,3 +160,28 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
 }
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "rediss:URL",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SSL": True,
+        },
+    }
+}
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+}
+
+
+CELERY_BROKER_URL = "rediss:URL?ssl_cert_reqs=CERT_NONE"
+CELERY_RESULT_BACKEND = "rediss:URL?ssl_cert_reqs=CERT_NONE"
+
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
